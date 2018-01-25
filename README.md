@@ -6,8 +6,8 @@ messy
 [![](https://img.shields.io/github/license/not4drugs/messy.svg)](https://github.com/not4drugs/messy/blob/master/LICENSE "License")
 [![](https://badge.fury.io/py/messy.svg)](https://badge.fury.io/py/messy "PyPI")
 
-In what follows `python3` is an alias for `python3.5` or any later
-version (`python3.6` and so on).
+In what follows `python3` is an alias for `python3.6` or any later
+version.
 
 Installation
 ------------
