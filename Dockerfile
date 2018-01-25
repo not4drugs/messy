@@ -6,7 +6,7 @@ WORKDIR /opt/messy
 
 COPY messy/ messy/
 COPY tests/ tests/
-COPY README.rst .
+COPY README.md .
 COPY setup.py .
 COPY setup.cfg .
 
