@@ -7,7 +7,10 @@ from messy.config import PROJECT_NAME
 project_base_url = 'https://github.com/not4drugs/messy/'
 
 setup_requires = [
-    'pytest-runner>=3.0'
+    'pytest-runner>=3.0',
+]
+install_requires = [
+    'pycryptodomex>=3.4.7',
 ]
 tests_require = [
     'pydevd>=1.1.1',  # debugging
@@ -26,4 +29,5 @@ setup(name=PROJECT_NAME,
       url=project_base_url,
       download_url=project_base_url + 'archive/master.zip',
       setup_requires=setup_requires,
+      install_requires=install_requires,
       tests_require=tests_require)
