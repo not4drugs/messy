@@ -6,7 +6,7 @@ services:
       context: .
       args:
         - PYTHON3_VERSION=${PYTHON3_VERSION}
-    image: not4drugs/messy:0.0.0
+    image: not4drugs/messy:0.0.1-alpha
     volumes:
       - ./messy/:/opt/messy/messy/
       - ./scripts/:/opt/messy/scripts/
