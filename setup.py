@@ -18,10 +18,10 @@ install_requires = [
     'pydevd>=1.1.1',  # debugging
 ]
 tests_require = [
-    'pydevd>=1.1.1',  # debugging
+    'hypothesis>=3.38.5',
     'pytest>=3.3.0',
     'pytest-cov>=2.5.1',
-    'hypothesis>=3.38.5',
+    'pydevd>=1.1.1',  # debugging
 ]
 
 setup(name=PROJECT_NAME,
