@@ -18,6 +18,5 @@ public_keys = (private_keys
                .map(operator.methodcaller(RSA.RsaKey.publickey.__name__)))
 keys = strategies.one_of(private_keys,
                          public_keys)
-names = strategies.text(min_size=1)
 secrets = strategies.one_of(strategies.none(),
                             strategies.text(min_size=1))

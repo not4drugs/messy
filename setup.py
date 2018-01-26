@@ -21,6 +21,7 @@ tests_require = [
     'hypothesis>=3.38.5',
     'pytest>=3.3.0',
     'pytest-cov>=2.5.1',
+    'pytest-asyncio>=0.8.0',
     'pydevd>=1.1.1',  # debugging
 ]
 

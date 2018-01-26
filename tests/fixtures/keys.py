@@ -23,11 +23,6 @@ def key() -> RSA.RsaKey:
 
 
 @pytest.fixture(scope='function')
-def name() -> str:
-    return example(strategies.names)
-
-
-@pytest.fixture(scope='function')
 def secret() -> str:
     return example(strategies.secrets)
 
