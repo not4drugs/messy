@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+import logging.config
+import os
+import sys
+from asyncio import get_event_loop
+
+import click
+from aiohttp.web import run_app
+
+from messy import (app,
+                   keys)
+from messy.config import PROJECT_NAME
+
+
+@click.group()
+@click.option('--verbose', '-v',
+              is_flag=True,
+              help='Set logging level to DEBUG.')
+@click.pass_context
+def main(ctx: click.Context,
+         verbose: bool) -> None:
+    instance_name = os.environ['Messy.Name']
+    set_logging(instance_name=instance_name,
+                project_name=PROJECT_NAME,
+                verbose=verbose)
+    host = os.environ['Messy.Host']
+    port = int(os.environ['Messy.Port'])
+    ctx.obj = {'instance': instance_name,
+               'host': host,
+               'port': port}
+
+
+def set_logging(*,
+                instance_name: str,
+                project_name: str,
+                log_file_extension: str = '.log',
+                verbose: bool) -> None:
+    logs_file_name = instance_name + log_file_extension
+    logs_file_path = os.path.join(os.getcwd(), logs_file_name)
+    configurator = dict_configurator(logs_file_path=logs_file_path,
+                                     project_name=project_name)
+    configurator.configure()
+
+    if not verbose:
+        logging.getLogger(project_name).setLevel(logging.INFO)
+
+
+def dict_configurator(*,
+                      logs_file_path: str,
+                      project_name: str,
+                      version: int = 1) -> logging.config.DictConfigurator:
+    file_config = {'format': '[%(levelname)-8s %(asctime)s - %(name)s] '
+                             '%(message)s'}
+    console_formatter_config = {'format': '[%(levelname)-8s %(name)s] %(msg)s'}
+    formatters = {'console': console_formatter_config,
+                  'file': file_config}
+    console_handler_config = {'class': 'logging.StreamHandler',
+                              'level': logging.DEBUG,
+                              'formatter': 'console',
+                              'stream': sys.stdout}
+    file_handler_config = {'class': 'logging.FileHandler',
+                           'level': logging.DEBUG,
+                           'formatter': 'file',
+                           'filename': logs_file_path}
+    handlers = {'console': console_handler_config,
+                'file': file_handler_config}
+    loggers = {None: {'level': logging.DEBUG,
+                      'handlers': ('console', 'file'),
+                      'qualname': project_name}}
+    config = dict(formatters=formatters,
+                  handlers=handlers,
+                  loggers=loggers,
+                  version=version)
+    return logging.config.DictConfigurator(config)
+
+
+@main.command()
+@click.pass_context
+def run(ctx: click.Context) -> None:
+    os.makedirs(keys.directory_path,
+                exist_ok=True)
+    logger = logging.getLogger(PROJECT_NAME)
+    instance_name = ctx.obj['instance']
+    loop = get_event_loop()
+    instance = app.create(logger=logger,
+                          instance_name=instance_name,
+                          loop=loop)
+    host = ctx.obj['host']
+    port = ctx.obj['port']
+    run_app(instance,
+            host=host,
+            port=port,
+            print=logger.info,
+            loop=loop)
+
+
+if __name__ == '__main__':
+    main()

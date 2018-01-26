@@ -1,3 +1,5 @@
+import os
+
 from setuptools import (setup,
                         find_packages)
 
@@ -11,6 +13,9 @@ setup_requires = [
 ]
 install_requires = [
     'pycryptodomex>=3.4.7',
+    'click>=6.7',
+    'aiohttp>=2.3.9',
+    'pydevd>=1.1.1',  # debugging
 ]
 tests_require = [
     'pydevd>=1.1.1',  # debugging
@@ -20,7 +25,8 @@ tests_require = [
 ]
 
 setup(name=PROJECT_NAME,
-      packages=find_packages(exclude=('tests',)),
+      packages=find_packages(exclude=['tests']),
+      scripts=[os.path.join('scripts', 'messy')],
       version=messy.__version__,
       description=messy.__doc__,
       long_description=open('README.md').read(),

@@ -9,11 +9,19 @@ services:
     image: not4drugs/messy:0.0.0
     volumes:
       - ./messy/:/opt/messy/messy/
+      - ./scripts/:/opt/messy/scripts/
       - ./tests/:/opt/messy/tests/
       - ./README.md:/opt/messy/README.md
       - ./setup.py:/opt/messy/setup.py
       - ./setup.cfg:/opt/messy/setup.cfg
-    entrypoint: python3
-    command: setup.py test
+    environment:
+      - Messy.Name=messy
+      - Messy.Host=messy
+      - Messy.Port=63779
+    command:
+      - --verbose
+      - run
+    ports:
+      - 63779:63779
     extra_hosts:
-      - "dockerhost:$DOCKERHOST"  # for debugging
+      - "dockerhost:${DOCKERHOST}"  # for debugging
