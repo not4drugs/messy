@@ -16,16 +16,18 @@ def test_search(key: RSA.RsaKey,
                 secret: str,
                 directory_path: str,
                 monkeypatch: MonkeyPatch) -> None:
+    monkeypatch.setattr(keys, 'directory_path', directory_path)
+
     with pytest.raises(FileNotFoundError):
         search(name,
                secret=secret)
 
-    monkeypatch.setattr(keys, 'directory_path', directory_path)
+    monkeypatch.setattr(keys, 'cache', {name: key})
+    key_from_cache = search(name=name,
+                            secret=secret)
     save(key,
          name=name,
          secret=secret)
-    key_from_cache = search(name=name,
-                            secret=secret)
     monkeypatch.setattr(keys, 'cache', {})
     key_from_file = search(name=name,
                            secret=secret)
