@@ -1,3 +1,4 @@
+import codecs
 from itertools import accumulate
 
 from Cryptodome.Cipher import (AES,
@@ -57,3 +58,17 @@ def decrypt_rsa(message: bytes,
                 private_key: RSA.RsaKey) -> bytes:
     cipher = rsa_cipher(private_key)
     return cipher.decrypt(message)
+
+
+def encode(message: bytes,
+           *,
+           encoding: str = 'hex') -> bytes:
+    return codecs.encode(message,
+                         encoding=encoding)
+
+
+def decode(message: bytes,
+           *,
+           encoding: str = 'hex') -> bytes:
+    return codecs.decode(message,
+                         encoding=encoding)
