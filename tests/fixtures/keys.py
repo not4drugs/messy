@@ -1,6 +1,7 @@
+from tempfile import TemporaryDirectory
+
 import pytest
 from Cryptodome.PublicKey import RSA
-from _pytest.tmpdir import TempdirFactory
 
 from tests import strategies
 from tests.utils import example
@@ -42,5 +43,6 @@ def exponent() -> int:
 
 
 @pytest.fixture(scope='function')
-def directory_path(tmpdir_factory: TempdirFactory) -> str:
-    return str(tmpdir_factory.mktemp('.ssh'))
+def directory_path() -> str:
+    with TemporaryDirectory() as result:
+        yield result
