@@ -1,2 +1,2 @@
 from .keys import private_keys
-from .utils import message
+from .utils import messages
