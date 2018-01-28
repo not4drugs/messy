@@ -6,9 +6,9 @@ from typing import (Callable,
                     Coroutine)
 
 from aiohttp.web import (Application,
-                         Request,
-                         Response,
                          json_response)
+from aiohttp.web_request import Request
+from aiohttp.web_response import Response
 
 from .utils import Status
 
@@ -27,12 +27,15 @@ async def factory(app: Application,
             response = await handler(request)
         except Exception:
             logger.exception('')
-            err_msg = traceback.format_exc()
+            err_msg = ('Something unexpected happened, '
+                       'contact with administrator '
+                       'and provide following traceback:\n'
+                       f'{traceback.format_exc()}')
             data = {'status': Status.unknown_error,
                     'reason': err_msg,
                     'instance': instance_name}
             return json_response(data,
-                                 status=HTTPStatus.BAD_REQUEST)
+                                 status=HTTPStatus.INTERNAL_SERVER_ERROR)
         else:
             response_encoding = response.charset
             response_body = response.body
