@@ -11,8 +11,10 @@ from . import (messages,
                keys)
 from .utils import Status
 
+JsonType = Dict[str, Union[int, str]]
 
-async def to_json(request: Request) -> Dict[str, Union[str, int]]:
+
+async def to_json(request: Request) -> JsonType:
     return await request.json()
 
 
