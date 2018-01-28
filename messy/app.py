@@ -1,10 +1,28 @@
 import logging
 from asyncio import AbstractEventLoop
+from functools import partial
+from typing import NamedTuple
 
+from aiohttp.hdrs import METH_POST
 from aiohttp.web import Application
 
 from . import (handlers,
                middlewares)
+
+
+class Route(NamedTuple):
+    method: str
+    path: str
+
+
+PostRoute = partial(Route, METH_POST)
+
+routes = {
+    handlers.generate_key: PostRoute('/generate-key'),
+    handlers.add_key: PostRoute('/add-key'),
+    handlers.encrypt: PostRoute('/encrypt'),
+    handlers.decrypt: PostRoute('/decrypt'),
+}
 
 
 def create(*,
@@ -15,8 +33,7 @@ def create(*,
                       loop=loop,
                       middlewares=[middlewares.factory])
     app['instance'] = instance_name
-    app.router.add_post('/generate-key', handlers.generate_key)
-    app.router.add_post('/add-key', handlers.add_key)
-    app.router.add_post('/encrypt', handlers.encrypt)
-    app.router.add_post('/decrypt', handlers.decrypt)
+    for handler, route in routes.items():
+        app.router.add_route(*route,
+                             handler=handler)
     return app
