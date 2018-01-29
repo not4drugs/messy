@@ -69,7 +69,7 @@ def test_to_file_path(name: str) -> None:
     result = to_file_path(name)
 
     assert isinstance(result, str)
-    assert not result.endswith(name)
+    assert os.path.basename(result) != name
 
 
 def test_to_file_name(name: str) -> None:
