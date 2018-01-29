@@ -41,4 +41,9 @@ directory_path = os.path.join(Path.home(), '.ssh')
 
 
 def to_file_path(name: str) -> str:
-    return os.path.join(directory_path, name)
+    return os.path.join(directory_path,
+                        to_file_name(name))
+
+
+def to_file_name(name: str) -> str:
+    return name.encode().hex()
