@@ -8,7 +8,8 @@ from messy import keys
 from messy.keys import (create,
                         save,
                         search,
-                        to_file_path)
+                        to_file_path,
+                        to_file_name)
 
 
 def test_search(key: RSA.RsaKey,
@@ -68,4 +69,11 @@ def test_to_file_path(name: str) -> None:
     result = to_file_path(name)
 
     assert isinstance(result, str)
-    assert name in result
+    assert not result.endswith(name)
+
+
+def test_to_file_name(name: str) -> None:
+    result = to_file_name(name)
+
+    assert isinstance(result, str)
+    assert name != result
