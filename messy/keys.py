@@ -12,6 +12,8 @@ def search(name: str,
     try:
         return cache[name]
     except KeyError:
+        if secret is not None:
+            secret = secret.encode()
         path = to_file_path(name)
         with open(path, mode='rb') as file:
             content = file.read()
@@ -24,9 +26,12 @@ def save(key: RSA.RsaKey,
          *,
          name: str,
          secret: str = None) -> None:
+    if secret is not None:
+        secret = secret.encode()
     path = to_file_path(name)
+    content = key.exportKey(passphrase=secret)
     with open(path, mode='wb') as file:
-        file.write(key.exportKey(passphrase=secret))
+        file.write(content)
     cache[name] = key
 
 
