@@ -75,8 +75,9 @@ async def add_key(request: Request) -> Response:
 
     keys.save(public_key,
               name=name)
-    return json_response({'status': Status.ok,
-                          'name': name})
+    data = {'status': Status.ok,
+            'name': name}
+    return json_response(data)
 
 
 async def encrypt(request: Request) -> Response:
